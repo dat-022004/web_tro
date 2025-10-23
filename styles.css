@@ -1,0 +1,893 @@
+:root {
+  --primary-blue: #007BFF; /* Màu xanh dương chính cho tiêu đề và accent */
+  --secondary-yellow: #FFC107; /* Màu vàng cho giá */
+  --background-light: #F8F9FA; /* Nền sáng */
+  --text-dark: #212529; /* Chữ tối */
+  --text-muted: #6C757D; /* Chữ mờ */
+  --success-green: #28A745; /* Xanh lá cho trạng thái khả dụng */
+  --danger-red: #DC3545; /* Đỏ cho trạng thái đã thuê */
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Bóng card */
+  --card-shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.15); /* Bóng sâu hơn cho chiều sâu */
+  --border-radius: 12px; /* Bo góc */
+  --brown: #8b5e3c; /* Nâu cho login/register */
+  --brown-600: #6b4f3a;
+  --surface-cream: #f7f5f2;
+  --ink: #2f2a25;
+  --button-gradient: linear-gradient(135deg, #007BFF, #0056b3); /* Gradient cho nút */
+  --button-shadow: 0 4px 12px rgba(0, 123, 255, 0.3); /* Bóng nút */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* Login/Register Container - Giống ảnh: Nền kem, bo tròn lớn, bóng mềm */
+body:not(.app-layout) {
+  display: flex;
+  flex-direction: column; /* Stack card and support footer vertically */
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 16px; /* breathing room on small screens */
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 800px at 15% 10%, rgba(255,255,255,0.45), transparent 60%),
+    radial-gradient(1000px 700px at 85% 90%, rgba(255,255,255,0.35), transparent 60%),
+    linear-gradient(135deg, #eeeae4, #e3ddd6 40%, #d9d2cb);
+  overflow: hidden;
+}
+
+.container {
+  display: none;
+  background: var(--surface-cream);
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,0.8);
+  width: min(440px, 92vw);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.container.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.container h2 {
+  text-align: center;
+  color: var(--brown-600);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.container h2::before,
+.container h2::after {
+  content: "·";
+  color: rgba(107, 79, 58, 0.6);
+  position: absolute;
+  font-size: 24px;
+}
+
+.container h2::before { left: 20px; }
+.container h2::after { right: 20px; }
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  outline: none;
+}
+
+/* Nút đẹp hơn: Gradient, bóng sâu, hover nâng lên */
+button[type="submit"], .btn-primary {
+  width: 100%;
+  padding: 16px;
+  background: var(--button-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--button-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+button[type="submit"]:hover, .btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+  background: linear-gradient(135deg, #0056b3, #007BFF);
+}
+
+button[type="submit"]:active, .btn-primary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+/* Thêm hiệu ứng ripple cho nút */
+button[type="submit"]::before, .btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s;
+}
+
+button[type="submit"]:active::before, .btn-primary:active::before {
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  margin: -150px 0 0 -150px;
+}
+
+.switch {
+  text-align: center;
+  margin-top: 20px;
+  color: var(--text-muted);
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.switch a {
+  color: var(--primary-blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.switch a:hover {
+  text-decoration: underline;
+}
+
+/* Overlay thông báo - Chiều sâu hơn với bóng lớn */
+#hop-thong-bao-nen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+#hop-thong-bao {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--card-shadow-deep);
+  max-width: 560px;
+  text-align: center;
+  position: relative;
+  border: 1px solid #e5e7eb;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+#hop-thong-bao-nen[style*="display: flex"] #hop-thong-bao {
+  transform: translateY(0);
+}
+
+#hop-thong-bao-dong {
+  background: var(--button-gradient);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: var(--button-shadow);
+}
+
+#hop-thong-bao-dong:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+/* Pretty contact modal inside overlay */
+.contact-modal { text-align: left; }
+.contact-modal .contact-header { display:flex; gap:12px; align-items:center; margin-bottom: 12px; }
+.contact-modal .contact-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; background:#e0f2fe; color:#075985; box-shadow: inset 0 1px 0 rgba(255,255,255,.6); }
+.contact-modal .contact-title { font-weight:800; color:#111827; font-size:18px; }
+.contact-modal .contact-sub { color:#6b7280; font-size:14px; }
+.contact-modal .contact-actions { display:flex; gap:10px; margin-top: 6px; }
+.btn-zalo { background: linear-gradient(135deg, #1e90ff, #0ea5e9); box-shadow: 0 4px 12px rgba(14,165,233,.35); }
+.btn-zalo:hover { box-shadow: 0 6px 16px rgba(14,165,233,.45); }
+.btn-call { background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 4px 12px rgba(34,197,94,.35); }
+.btn-call:hover { box-shadow: 0 6px 16px rgba(34,197,94,.45); }
+.contact-modal .contact-footer { display:flex; justify-content:flex-end; margin-top: 12px; }
+
+/* Lightbox viewer for room images */
+.lightbox { display:flex; flex-direction:column; align-items:center; gap:10px; }
+.lightbox .viewport { position:relative; max-width:92vw; max-height:78vh; display:flex; align-items:center; justify-content:center; background:#000; border-radius:12px; overflow:hidden; }
+.lightbox img { max-width:92vw; max-height:78vh; object-fit:contain; display:block; }
+.lightbox .nav { position:absolute; top:50%; transform:translateY(-50%); display:flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:999px; background:rgba(255,255,255,.15); color:#fff; backdrop-filter: blur(4px); cursor:pointer; user-select:none; }
+.lightbox .nav:hover { background:rgba(255,255,255,.25); }
+.lightbox .prev { left:10px; }
+.lightbox .next { right:10px; }
+.lightbox .counter { color:#e5e7eb; font-weight:700; }
+
+/* Generic modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  width: min(760px, 92vw);
+  box-shadow: var(--card-shadow-deep);
+  border: 1px solid #e5e7eb;
+  max-height: 92vh;            /* tránh tràn ngoài màn hình */
+  overflow: auto;              /* cho phép cuộn nội dung modal */
+  -webkit-overflow-scrolling: touch; /* cuộn mượt trên iOS */
+}
+.modal h3 { margin-bottom: 10px; color: var(--primary-blue); }
+
+/* App Layout - Sidebar cố định, không cuộn theo màn hình */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.menu {
+  width: 260px;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--card-shadow);
+  position: fixed; /* Cố định thanh menu */
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+  overflow-y: auto; /* Cho phép cuộn nếu menu dài */
+}
+
+.menu-item {
+  padding: 16px 24px;
+  border: none;
+  background: none;
+  color: var(--text-dark);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+  margin: 0 4px; /* Khoảng cách hai bên */
+}
+
+.menu-item:hover {
+  background: #f8f9fa;
+  color: var(--primary-blue);
+  transform: translateX(2px); /* Hiệu ứng di chuyển nhẹ */
+}
+
+.menu-item.active {
+  background: #e3f2fd;
+  color: var(--primary-blue);
+  border-left-color: var(--primary-blue);
+  box-shadow: inset 4px 0 0 var(--primary-blue); /* Chiều sâu cho active */
+}
+
+/* Content - Thêm margin-left để tránh che khuất bởi menu cố định */
+.content {
+  flex: 1;
+  padding: 32px;
+  margin-left: 260px; /* Bù cho menu fixed width */
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary-blue);
+  margin-bottom: 32px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+  padding-left: 8px; /* Khoảng cách nhỏ */
+}
+
+/* Admin contact footer (placed at the bottom of page) */
+.support-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: center;
+  justify-content: flex-start;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin: 24px 0 8px;
+}
+.support-footer a { color: #0ea5e9; font-weight: 700; text-decoration: none; }
+.support-footer a:hover { text-decoration: underline; }
+.support-footer .dot { color: #9ca3af; }
+
+/* Login/Register page: center the support footer and make it slimmer */
+body:not(.app-layout) .support-footer {
+  align-self: center;
+  background: rgba(255,255,255,0.75);
+  border-color: rgba(229,231,235,0.9);
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  backdrop-filter: blur(8px);
+  padding: 10px 14px;
+  margin: 0; /* directly under the card via body gap */
+}
+body:not(.app-layout) .support-footer strong { font-weight: 800; color: #0f172a; }
+
+/* Panels - Thêm khoảng cách và chiều sâu */
+.panel {
+  display: none;
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow-deep);
+  padding: 28px;
+  margin-bottom: 32px; /* Khoảng cách lớn hơn giữa các panel */
+  transform: translateY(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.panel.active {
+  display: block;
+  transform: translateY(0);
+}
+
+.panel:hover {
+  box-shadow: var(--card-shadow-deep); /* Tăng bóng khi hover */
+}
+
+/* Forms trong panel - Khoảng cách tốt hơn */
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px; /* Tăng khoảng cách dưới */
+}
+
+.form-row .form-group {
+  flex: 1;
+  margin-bottom: 0; /* Loại bỏ margin dưới để gap kiểm soát */
+}
+
+/* Tables - Compact, striped với chiều sâu */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  background: #fff;
+}
+
+.table th,
+.table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.table-striped tbody tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.table-compact th,
+.table-compact td {
+  padding: 12px 14px; /* bigger touch area */
+  font-size: 15px;
+}
+
+.table tr:hover {
+  background: #f0f8ff; /* Hover row cho chiều sâu */
+}
+
+/* Tabbar (menu ngang trong panel) */
+.tabbar {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+.tab-item {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #374151;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.tab-item:hover { background: #f8fafc; }
+.tab-item.active {
+  background: #e3f2fd;
+  color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+/* Cards cho phòng trọ - Chiều sâu hơn với hover nâng */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px; /* Khoảng cách dưới grid */
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+  transform: translateY(0);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--card-shadow-deep);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.card-content {
+  padding: 20px;
+  position: relative;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.card-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--secondary-yellow);
+  margin-bottom: 8px;
+}
+
+.card-detail {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 16px; /* Tăng khoảng cách */
+}
+
+.status-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Chiều sâu cho tag */
+}
+
+.status-tag.available {
+  background: #d4edda;
+  color: var(--success-green);
+}
+
+.status-tag.rented {
+  background: #f8d7da;
+  color: var(--danger-red);
+}
+
+/* Nút trong card - Đẹp hơn giống nút submit */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--button-gradient);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--button-shadow);
+  margin-top: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+/* Variants */
+.btn-secondary {
+  background: linear-gradient(135deg, #6b7280, #374151);
+  box-shadow: 0 4px 12px rgba(55, 65, 81, 0.3);
+}
+.btn-secondary:hover {
+  box-shadow: 0 6px 16px rgba(55, 65, 81, 0.4);
+}
+
+.btn-outline {
+  background: #fff;
+  color: var(--primary-blue);
+  border: 2px solid var(--primary-blue);
+  box-shadow: none;
+}
+.btn-outline:hover {
+  background: #e3f2fd;
+  transform: translateY(-2px);
+}
+
+.btn-success { background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 4px 12px rgba(34,197,94,.35); }
+.btn-success:hover { box-shadow: 0 6px 16px rgba(34,197,94,.45); }
+
+.btn-danger { background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 4px 12px rgba(185,28,28,.35); }
+.btn-danger:hover { box-shadow: 0 6px 16px rgba(185,28,28,.45); }
+
+.btn-sm { padding: 6px 12px; font-size: 14px; }
+.btn-lg { padding: 14px 22px; font-size: 16px; }
+
+/* Default buttons (non .btn) adopt primary colored style for consistency */
+button:not(.btn):not(.menu-item) {
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 10px 18px; min-height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: var(--button-gradient);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .2px;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+  box-shadow: var(--button-shadow);
+}
+button:not(.btn):not(.menu-item):hover { transform: translateY(-2px); filter: brightness(1.03); }
+button:not(.btn):not(.menu-item):active { transform: translateY(0); }
+
+/* Table action cell spacing */
+td > .btn + .btn { margin-left: 6px; }
+
+/* Gallery ảnh phòng */
+#post-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+#post-gallery img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#post-gallery img:hover {
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Preview ảnh xác thực */
+#verify-preview {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 8px;
+  box-shadow: var(--card-shadow-deep);
+}
+
+/* Responsive - Menu stack trên mobile, nhưng giữ fixed nếu có thể */
+@media (max-width: 768px) {
+  /* Topbar fixed */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    padding: calc(6px + var(--safe-top)) 10px 6px;
+    background: rgba(255,255,255,.96);
+    border-bottom: 1px solid #e5e7eb;
+    display: flex; align-items: center; gap: 8px;
+    z-index: 120; /* đảm bảo luôn click được hamburger */
+    backdrop-filter: saturate(1.2) blur(6px);
+  }
+  .hamburger {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px;
+    border-radius: 10px; border: 1px solid #e5e7eb;
+    background: #f8fafc; color: #111827; font-size: 18px; font-weight: 800;
+    box-shadow: none;
+  }
+
+  /* Drawer menu (off-canvas) */
+  .menu {
+    width: min(82vw, 320px);
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    box-shadow: 0 10px 24px rgba(0,0,0,.2);
+    pointer-events: none; /* khi đóng không chặn click */
+  }
+  .menu.open { transform: translateX(0); pointer-events: auto; }
+
+  .drawer-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.35);
+    z-index: 90; /* dưới topbar, trên content */
+  }
+
+  .menu-item {
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    margin: 0;
+    padding: 12px 16px;
+  }
+
+  .menu-item.active {
+    border-bottom-color: var(--primary-blue);
+  }
+
+  .content {
+    margin-left: 0; /* không cần bù drawer */
+    padding: calc(52px + 12px + var(--safe-top)) 16px calc(16px + var(--safe-bottom)); /* chừa chỗ topbar; KHÔNG còn bottom-nav */
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .container {
+    width: 95%;
+    padding: 24px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .panel {
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  /* Modal on mobile: full-width-ish and scrollable */
+  .modal { width: 96vw; max-height: 90vh; }
+  .modal-backdrop { align-items: flex-start; padding: 60px 0 16px; }
+}
+
+/* (No floating widget on request) */
+
+/* ====================
+   Mobile polish & theming
+   ==================== */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+*:focus { outline-color: var(--primary-blue); }
+
+:root { --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
+
+/* Buttons: larger touch targets */
+.btn { padding: 12px 18px; min-height: 44px; gap: 8px; }
+.btn-sm { min-height: 36px; }
+.btn-lg { min-height: 48px; }
+
+/* Tabbar: scrollable, sticky on mobile */
+.tabbar { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 768px) {
+  .tabbar { position: sticky; top: calc(0px + var(--safe-top)); background: #fff; padding-top: 8px; z-index: 20; scrollbar-width: none; }
+  .tabbar::-webkit-scrollbar { display: none; }
+}
+
+/* Room card (used by sinhvien) */
+.room-card { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: var(--card-shadow); }
+.room-card .left { display:flex; flex-direction:column; gap:8px; }
+.room-card .thumb { position: relative; border-radius: 10px; overflow: hidden; background: #f3f4f6; height: 110px; }
+.room-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
+.room-card .status-box { text-align:center; padding:6px 8px; border-radius:8px; font-size:12px; font-weight:700; border:1px solid #e5e7eb; }
+.room-card .status-box.busy { color:#b91c1c; background:#fff5f5; border-color:#fecaca; }
+.room-card .status-box.empty { color:#15803d; background:#f0fdf4; border-color:#bbf7d0; }
+.room-card .body { display: flex; flex-direction: column; gap: 6px; }
+.room-card .title { font-size: 16px; font-weight: 700; color: #111827; }
+.room-card .price { font-weight: 800; color: var(--secondary-yellow); }
+.room-card .meta { font-size: 13px; color: #6b7280; }
+.room-card .icons { font-size: 12px; color: #6b7280; }
+.room-card .actions { margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; }
+.room-card .desc { font-size: 13px; color:#374151; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+@media (max-width: 480px) { .room-card { grid-template-columns: 1fr; } .room-card .thumb{height:180px;} }
+
+/* Table alignment */
+.table th, .table td { vertical-align: middle; }
+
+/* Contract card (student rented rooms) */
+.contract-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: var(--card-shadow); padding: 16px; margin: 12px 0; }
+.contract-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 8px; }
+.contract-title { font-weight: 800; color: #111827; }
+.contract-meta { color: #6b7280; font-size: 13px; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 8px 0; align-items: center; }
+.kv .k { color: #6b7280; font-size: 13px; }
+.kv .v { color: #111827; font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; background: #f1f5f9; color: #0f172a; font-size: 13px; border: 1px solid #e5e7eb; }
+.chip.money { background: #ecfeff; color: #075985; border-color: #bae6fd; }
+.chip.clickable { cursor: pointer; transition: background .2s ease, transform .1s ease; }
+.chip.clickable:hover { background: #e0f2fe; }
+.chip.clickable:active { transform: scale(0.98); }
+.badge-g { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; padding: 4px 8px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+.badge-r { background: #fff5f5; color: #b91c1c; border: 1px solid #fecaca; padding: 4px 8px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+/* Mobile: sticky top menu and content safe bottom padding */
+@media (max-width: 768px) {
+  .content { margin-left: 0; padding: calc(52px + 12px + var(--safe-top)) 16px calc(16px + var(--safe-bottom)); }
+  /* Tables: enable horizontal scroll on small screens */
+  .table { display: block; overflow-x: auto; white-space: nowrap; }
+  .table th, .table td { padding: 10px 12px; }
+  /* Lightbox controls: easier tap */
+  .lightbox .nav { width: 36px; height: 36px; }
+  /* Footer wraps neatly */
+  .support-footer { position: static; padding: 10px 12px; font-size: 14px; gap: 8px; flex-wrap: wrap; }
+}
+
+/* Compact layout for narrow phones */
+@media (max-width: 480px) {
+  .page-title { font-size: 26px; margin-bottom: 16px; }
+  .panel { padding: 16px; }
+  input, select, textarea { padding: 10px 12px; font-size: 14px; }
+  button:not(.menu-item), .btn { padding: 9px 12px; min-height: 38px; font-size: 14px; }
+
+  .table { font-size: 13px; }
+  .table th, .table td { padding: 8px 10px; }
+  .table-compact th, .table-compact td { padding: 8px 10px; }
+  .table { display: block; overflow-x: auto; white-space: nowrap; }
+
+  /* Hide less-important columns across pages to fit */
+  /* Notifications tables (both landlord and student) - hide Nội dung */
+  #noti-table th:nth-child(4),
+  #noti-table td:nth-child(4) { display: none; }
+
+  /* Student rented list: show all columns on mobile; allow horizontal scroll via wrapper */
+  #rented-list table th, #rented-list table td { display: table-cell; }
+
+  /* Landlord lists */
+  /* Rent requests: hide Phòng (2) */
+  #rr-list table th:nth-child(2), #rr-list table td:nth-child(2) { display: none; }
+  /* Manage rooms: hide Hợp đồng/Người thuê (5) */
+  #manage-rooms table th:nth-child(5), #manage-rooms table td:nth-child(5) { display: none; }
+  /* Payment history: hide Số điện (3) và Số nước (4) */
+  #pay-history table th:nth-child(3), #pay-history table td:nth-child(3),
+  #pay-history table th:nth-child(4), #pay-history table td:nth-child(4) { display: none; }
+
+  /* Admin tables */
+  /* Verify: hide Họ tên (3) và Ngày xác thực (7) */
+  #verify-table th:nth-child(3), #verify-table td:nth-child(3),
+  #verify-table th:nth-child(7), #verify-table td:nth-child(7) { display: none; }
+  /* Accounts: hide Vai trò (3) và Thông tin (5) */
+  #accounts-table th:nth-child(3), #accounts-table td:nth-child(3),
+  #accounts-table th:nth-child(5), #accounts-table td:nth-child(5) { display: none; }
+  /* Feedback: hide Nội dung (5) */
+  #feedback-table th:nth-child(5), #feedback-table td:nth-child(5) { display: none; }
+}
+
+/* Extra-compact layout for very small screens */
+@media (max-width: 400px) {
+  .page-title { font-size: 24px; margin-bottom: 16px; }
+  .panel { padding: 14px; margin-bottom: 16px; }
+  .form-row { gap: 10px; margin-bottom: 14px; }
+  .form-group { margin-bottom: 14px; }
+
+  input, select, textarea { padding: 10px 12px; font-size: 14px; border-radius: 10px; }
+  button:not(.menu-item) { padding: 9px 12px; min-height: 38px; font-size: 14px; border-radius: 10px; }
+  .btn { padding: 9px 12px; min-height: 38px; font-size: 14px; }
+  .btn-sm { padding: 6px 10px; font-size: 12px; min-height: 34px; }
+
+  /* Tables: denser spacing */
+  .table { font-size: 13px; }
+  .table th, .table td { padding: 8px 10px; }
+  .table-compact th, .table-compact td { padding: 8px 10px; font-size: 13px; }
+}
+
+@media (max-width: 340px) {
+  html { font-size: 14px; }
+  .page-title { font-size: 22px; }
+  .btn, button:not(.menu-item) { font-size: 13px; min-height: 36px; }
+  .table { font-size: 12.5px; }
+  .hamburger { width: 36px; height: 36px; font-size: 16px; }
+}
+
+/* Bottom navigation removed on request; drawer (hamburger) is the primary mobile navigation */
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root { --background-light: #0b1220; --text-dark: #e5e7eb; --text-muted: #9ca3af; }
+  body { background: var(--background-light); color: var(--text-dark); }
+  .panel, .card, .room-card, .menu, .modal { background: #0f172a; border-color: #233251; }
+  .menu-item:hover { background: #0b1220; }
+  .tab-item { background: #0b1220; border-color: #233251; color: #cbd5e1; }
+  .tab-item.active { background: #13203c; border-color: #3b82f6; color: #e5e7eb; }
+  .table { background: #0b1220; }
+  .table th { background: #0f172a; color: #9ca3af; }
+  .table td, .table th { border-color: #233251; }
+  .btn-outline { background: #0b1220; color: #93c5fd; border-color: #3b82f6; }
+  .menu { background: rgba(15,23,42,.85); }
+  .support-bar { background: #0b1220; border-color:#233251; color:#e5e7eb; }
+  .support-card { background:#0f172a; border-color:#233251; }
+  .support-card h4 { color:#e5e7eb; }
+  .support-card .row .k { color:#9ca3af; }
+}
